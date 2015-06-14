@@ -11,10 +11,10 @@ class Gui(threading.Thread):
         self.colors = {
             "green": "#8ef3c2",
             "blue": "#deeaf3",
-            "gray_fg" : "gray8",
+            "gray_fg": "gray8",
             "gray_bg": "gray55",
-            "orange" : "#f6b26b",
-            "white" : "white"
+            "orange": "#f6b26b",
+            "white": "white"
         }
 
         self.stop_flag = False
@@ -38,7 +38,6 @@ class Gui(threading.Thread):
 
         self.message_box.pack(fill=tkinter.X)
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.root.withdraw()
         if not self.stop_flag:
             self.root.mainloop()
 
@@ -47,7 +46,7 @@ class Gui(threading.Thread):
             self.s.stop()
         except AttributeError as e:
             pass
-            
+
         self.stop_flag = True
         self.root.destroy()
 
