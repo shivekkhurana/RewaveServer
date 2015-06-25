@@ -2,7 +2,7 @@
 
 
 from bluetooth import BluetoothSocket, RFCOMM, PORT_ANY, SERIAL_PORT_CLASS, SERIAL_PORT_PROFILE, advertise_service
-
+from threading import Thread
 
 config = {
     'backlog': 5,  # max unsuccesful connect attempts

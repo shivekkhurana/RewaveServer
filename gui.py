@@ -1,11 +1,10 @@
 #! /usr/bin/python
 
 import tkinter
-import threading
 import time
 
 
-class Gui(threading.Thread):
+class Gui():
 
     def __init__(self):
         self.colors = {
@@ -17,10 +16,8 @@ class Gui(threading.Thread):
             "white": "white"
         }
 
-        self.stop_flag = False
-        threading.Thread.__init__(self)
 
-    def run(self):
+    def start(self):
         self.root = tkinter.Tk()
         self.root.resizable(0, 0)
         self.root.configure(background='white')
@@ -37,21 +34,11 @@ class Gui(threading.Thread):
         )
 
         self.message_box.pack(fill=tkinter.X)
-        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
-        if not self.stop_flag:
-            self.root.mainloop()
+        # self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.root.mainloop()
 
     def on_close(self):
-        try:
-            self.s.stop()
-        except AttributeError as e:
-            pass
-
-        self.stop_flag = True
         self.root.destroy()
-
-    def set_server(self, s):
-        self.s = s
 
     def update_label(self, new_text, bg=None, fg=None):
         self.message_box.config(text=new_text)
