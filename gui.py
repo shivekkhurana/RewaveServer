@@ -15,6 +15,7 @@ class Gui():
             "orange": "#f6b26b",
             "white": "white"
         }
+        self.closed = False # this is accessed in another thread to stop the bt_server when the window is closed
 
 
     def start(self):
@@ -34,11 +35,15 @@ class Gui():
         )
 
         self.message_box.pack(fill=tkinter.X)
-        # self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.root.mainloop()
 
     def on_close(self):
         self.root.destroy()
+        self.closed = True
+
+    def is_closed(self):
+        return self.closed
 
     def update_label(self, new_text, bg=None, fg=None):
         self.message_box.config(text=new_text)

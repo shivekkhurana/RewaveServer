@@ -3,10 +3,12 @@ from bt_server import BtServer
 from gui import Gui
 from pykeyboard import PyKeyboard
 from threading import Thread
+import time
 
 g = Gui()
-
 k = PyKeyboard()
+bs = BtServer()
+
 key_bindings = {
     'left': k.left_key,
     'right': k.right_key,
@@ -19,7 +21,7 @@ def start_server():
     '''
     Start the server, wait for connection and start the read function
     '''
-    bs = BtServer()
+    global bs
     bs.start()
     g.mark_connected()
     read_from_client(bs)
@@ -37,7 +39,7 @@ def read_from_client(bs):
 
         if command == "exit":
             g.mark_waiting()
-            bs.stop()
+            bs.reset()
 
         else:
             read_from_client(bs)  # recursion
@@ -47,15 +49,7 @@ def read_from_client(bs):
 
     except KeyboardInterrupt:
         g.mark_waiting()
-        bs.stop()
-
-
-def start_server_perpetually():
-    '''
-    Keep on restarting the server after read completes
-    '''
-    while True:
-        start_server()
+        bs.reset()
 
 
 def control_keyboard(command):
@@ -65,6 +59,22 @@ def control_keyboard(command):
         pass
 
 
-read_thread = Thread(target=start_server_perpetually)
+def terminate_server():
+    '''
+    Poll gui to see if it's closed, if yes, close the bt_server as well
+    '''
+    global bs, g
+    while True:
+        if g.is_closed():
+            bs.stop()
+            break
+        else:
+            time.sleep(1)
+
+read_thread = Thread(target=start_server)
 read_thread.start()
+
+# terminate_server = Thread(target=terminate_server)
+# terminate_server.start()
+
 g.start()

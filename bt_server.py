@@ -33,7 +33,7 @@ class BtServer(object):
             profiles=[SERIAL_PORT_PROFILE]
         )
 
-        self.client_socket = self.socket.accept()[0]  # returns socket, name
+        self.accept()
 
     def stop(self):
         print("server stop called")
@@ -44,6 +44,10 @@ class BtServer(object):
             # in case if no client is connected
             pass
 
+    def reset(self):
+        self.close_connection()
+        self.accept()
+
     def recv(self, buffer=2048):
         try:
             return self.client_socket.recv(buffer).decode(encoding='UTF-8')
@@ -53,3 +57,10 @@ class BtServer(object):
 
     def send(self, data):
         self.client_socket.send(data)
+
+    def close_connection(self):
+        self.client_socket.close()
+
+    def accept(self):
+        # blocking call
+        self.client_socket = self.socket.accept()[0] # returns socket, name
