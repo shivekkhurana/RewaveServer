@@ -1,3 +1,4 @@
+Nuitka==0.5.13.1
 PyBluez==0.20
-python3-xlib==0.15
 PyUserInput==0.1.9
+python3-xlib==0.15
