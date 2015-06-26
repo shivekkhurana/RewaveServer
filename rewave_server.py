@@ -74,7 +74,7 @@ def terminate_server():
 read_thread = Thread(target=start_server)
 read_thread.start()
 
-# terminate_server = Thread(target=terminate_server)
-# terminate_server.start()
+terminate_server = Thread(target=terminate_server)
+terminate_server.start()
 
 g.start()

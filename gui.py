@@ -20,6 +20,7 @@ class Gui():
 
     def start(self):
         self.root = tkinter.Tk()
+        self.root.tk.call('wm', 'iconphoto', self.root._w, tkinter.PhotoImage(file='rewave_app_icon.png'))
         self.root.resizable(0, 0)
         self.root.configure(background='white')
         self.root.title("Rewave Server")
