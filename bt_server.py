@@ -12,27 +12,28 @@ config = {
 
 class BtServer(object):
 
-    def __init__(self):
+    def __init__(self, socket=None):
         super(BtServer, self).__init__()
-        self.socket = BluetoothSocket(RFCOMM)
+        self.socket = socket
 
     def start(self):
-        print("server start called")
-        # empty host address means this machine
-        self.socket.bind(("", PORT_ANY))
-        self.socket.listen(config['backlog'])
+        print('start called')
+        if not self.socket:
+            print('non socket, creating one')
+            self.socket = BluetoothSocket(RFCOMM)
+            # empty host address means this machine
+            self.socket.bind(("", PORT_ANY))
+            self.socket.listen(config['backlog'])
 
-        self.port = self.socket.getsockname()[1]
-        uuid = config['uuid']
+            advertise_service(
+                self.socket,
+                "Rewave Server",
+                service_id=config['uuid'],
+                service_classes=[config['uuid'], SERIAL_PORT_CLASS],
+                profiles=[SERIAL_PORT_PROFILE]
+            )
 
-        advertise_service(
-            self.socket,
-            "Rewave Server",
-            service_id=uuid,
-            service_classes=[uuid, SERIAL_PORT_CLASS],
-            profiles=[SERIAL_PORT_PROFILE]
-        )
-
+        self.port = self.socket.getsockname()[1] # need port for ref.
         self.accept()
 
     def stop(self):
@@ -44,11 +45,8 @@ class BtServer(object):
             # in case if no client is connected
             pass
 
-    def reset(self):
-        self.close_connection()
-        self.accept()
-
     def recv(self, buffer=2048):
+        print('recv called')
         try:
             return self.client_socket.recv(buffer).decode(encoding='UTF-8')
         except UnicodeDecodeError as e:
@@ -59,8 +57,10 @@ class BtServer(object):
         self.client_socket.send(data)
 
     def close_connection(self):
+        print("close_connection called")
         self.client_socket.close()
 
     def accept(self):
         # blocking call
+        print("accept Called. Waiting for connection on RFCOMM channel", self.port)
         self.client_socket = self.socket.accept()[0] # returns socket, name

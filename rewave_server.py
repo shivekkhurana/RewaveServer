@@ -7,7 +7,7 @@ import time
 
 g = Gui()
 k = PyKeyboard()
-bs = BtServer()
+socket = None
 
 key_bindings = {
     'left': k.left_key,
@@ -21,8 +21,10 @@ def start_server():
     '''
     Start the server, wait for connection and start the read function
     '''
-    global bs
+    global bs, socket
+    bs = BtServer(socket)
     bs.start()
+    socket = bs.socket # save the newly created socket for later ref
     g.mark_connected()
     read_from_client(bs)
 
@@ -31,25 +33,24 @@ def read_from_client(bs):
     '''
     Read function continues until "exit" is read
     '''
-    try:
-        command = bs.recv()
-        control_keyboard(command)
-        if command == "ping":
-            g.mark_ping()
+    while True:
+        try:
+            command = bs.recv()
+            control_keyboard(command)
+            if command == "ping":
+                g.mark_ping()
 
-        if command == "exit":
-            g.mark_waiting()
-            bs.reset()
+            if command == "exit":
+                print("recv exit, breaking")
+                break
 
-        else:
-            read_from_client(bs)  # recursion
+        except KeyboardInterrupt:
+            break
 
-    except IOError:
-        pass
-
-    except KeyboardInterrupt:
-        g.mark_waiting()
-        bs.reset()
+    print('out of loop')
+    g.mark_waiting()
+    bs.close_connection()
+    start_server()
 
 
 def control_keyboard(command):
