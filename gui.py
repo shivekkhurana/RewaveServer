@@ -17,9 +17,9 @@ class Gui():
         }
         self.closed = False # this is accessed in another thread to stop the bt_server when the window is closed
 
-
-    def start(self):
         self.root = tkinter.Tk()
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()
         self.root.tk.call('wm', 'iconphoto', self.root._w, tkinter.PhotoImage(file='rewave_app_icon.png'))
         self.root.resizable(0, 0)
         self.root.configure(background='white')
@@ -37,6 +37,9 @@ class Gui():
 
         self.message_box.pack(fill=tkinter.X)
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+
+
+    def start(self):
         self.root.mainloop()
 
     def on_close(self):

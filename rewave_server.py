@@ -2,11 +2,14 @@
 from bt_server import BtServer
 from gui import Gui
 from pykeyboard import PyKeyboard
+from pymouse import PyMouse
 from threading import Thread
 import time
+import bluetooth
 
 g = Gui()
 k = PyKeyboard()
+m = PyMouse()
 socket = None
 
 key_bindings = {
@@ -44,7 +47,21 @@ def read_from_client(bs):
                 print("recv exit, breaking")
                 break
 
+            if "move_mouse" in command:
+                command = command.split("-")
+                try:
+                    x = float(command[1])*g.screen_width
+                    y = float(command[2])*g.screen_height
+                    m.move(int(x), int(y))
+                except ValueError as v:
+                    # raised when data sent without much delay
+                    pass
+
         except KeyboardInterrupt:
+            break
+
+        except bluetooth.btcommon.BluetoothError:
+            #connection reset by peer
             break
 
     print('out of loop')
@@ -55,6 +72,7 @@ def read_from_client(bs):
 
 def control_keyboard(command):
     try:
+        print(command)
         k.tap_key(key_bindings[command])
     except KeyError:
         pass
