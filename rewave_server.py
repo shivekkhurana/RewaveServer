@@ -6,6 +6,8 @@ from pymouse import PyMouse
 from threading import Thread
 import time
 import bluetooth
+import sys
+import esky
 
 g = Gui()
 k = PyKeyboard()
@@ -18,6 +20,10 @@ key_bindings = {
     'up': k.up_key,
     'down': k.down_key
 }
+
+if hasattr(sys,"frozen"):
+    app = esky.Esky(sys.executable,"http://rewave.is-great.net")
+    app.auto_update()
 
 
 def start_server():
