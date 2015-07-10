@@ -8,6 +8,7 @@ import time
 import bluetooth
 import sys
 import esky
+import platform
 
 g = Gui()
 k = PyKeyboard()
@@ -22,7 +23,12 @@ key_bindings = {
 }
 
 if hasattr(sys,"frozen"):
-    app = esky.Esky(sys.executable,"http://rewave.is-great.net")
+    system = platform.system()
+    url = "http://rewave.is-great.net/"
+    if (system == "Windows") : url = url + "windows"
+    if (system == "Linux") : url = url + "linux"
+    if (system == "Darwin") : url = url + "darwin" 
+    app = esky.Esky(sys.executable, url)
     app.auto_update()
 
 
