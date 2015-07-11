@@ -7,9 +7,10 @@ from threading import Thread
 import time
 import bluetooth
 import sys
-import esky
+#import esky
 import platform
 
+sys.stderr = sys.stdout # py2exe log suppression
 g = Gui()
 k = PyKeyboard()
 m = PyMouse()
@@ -22,14 +23,14 @@ key_bindings = {
     'down': k.down_key
 }
 
-if hasattr(sys,"frozen"):
-    system = platform.system()
-    url = "http://rewave.is-great.net/"
-    if (system == "Windows") : url = url + "windows"
-    if (system == "Linux") : url = url + "linux"
-    if (system == "Darwin") : url = url + "darwin" 
-    app = esky.Esky(sys.executable, url)
-    app.auto_update()
+# if hasattr(sys,"frozen"):
+#     system = platform.system()
+#     url = "http://rewave.is-great.net/"
+#     if (system == "Windows") : url = url + "windows"
+#     if (system == "Linux") : url = url + "linux"
+#     if (system == "Darwin") : url = url + "darwin" 
+#     app = esky.Esky(sys.executable, url)
+#     app.auto_update()
 
 
 def start_server():

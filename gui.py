@@ -20,7 +20,7 @@ class Gui():
         self.root = tkinter.Tk()
         self.screen_width = self.root.winfo_screenwidth()
         self.screen_height = self.root.winfo_screenheight()
-        self.root.tk.call('wm', 'iconphoto', self.root._w, tkinter.PhotoImage(file='rewave_app_icon.png'))
+        self.root.tk.call('wm', 'iconphoto', self.root._w, tkinter.PhotoImage(file='images/rewave_app_icon.png'))
         self.root.resizable(0, 0)
         self.root.configure(background='white')
         self.root.title("Rewave Server")
