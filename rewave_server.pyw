@@ -16,6 +16,25 @@ k = PyKeyboard()
 m = PyMouse()
 socket = None
 
+if sys.platform == 'win32':
+    key_bindings = {
+        'left': k.left_key,
+        'right': k.right_key,
+        'up': k.up_key,
+        'down': k.down_key,
+        'space': k.space_key,
+        'enter': k.enter_key,
+        'tab': k.tab_key,
+        'shift': k.shift_key,
+        'control': k.control_key,
+        'alt': k.menu_key,
+        'caps_lock': k.caps_lock_key,
+        'num_lock': k.num_lock_key,
+        'scroll_lock': k.scroll_lock_key,
+        'escape': k.escape_key,
+        'page_up': k.page_up_key,
+        'page_down': k.page_down_key,
+}
 
 # if hasattr(sys,"frozen"):
 #     system = platform.system()
@@ -80,7 +99,10 @@ def read_from_client(bs):
 def control_keyboard(command):
     try:
         print(command)
-        k.tap_key(k.lookup_character_keycode(command))
+        if sys.platform == 'linux':
+            k.tap_key(k.lookup_character_keycode(command.capitalize()))
+        if sys.platform == 'win32':
+            k.tap_key(key_bindings[command])
     except KeyError:
         pass
 
