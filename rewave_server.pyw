@@ -16,12 +16,6 @@ k = PyKeyboard()
 m = PyMouse()
 socket = None
 
-key_bindings = {
-    'left': k.left_key,
-    'right': k.right_key,
-    'up': k.up_key,
-    'down': k.down_key
-}
 
 # if hasattr(sys,"frozen"):
 #     system = platform.system()
@@ -86,7 +80,7 @@ def read_from_client(bs):
 def control_keyboard(command):
     try:
         print(command)
-        k.tap_key(key_bindings[command])
+        k.tap_key(k.lookup_character_keycode(command))
     except KeyError:
         pass
 
