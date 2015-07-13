@@ -73,6 +73,11 @@ def read_from_client(bs):
                 print("recv exit, breaking")
                 break
 
+            if "mouse_click" in command:
+                pos = m.position()
+                command = command.split('-')
+                m.press(pos[0], pos[1], button=int(command[1]))
+
             if "move_mouse" in command:
                 command = command.split("-")
                 try:

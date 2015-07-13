@@ -9,7 +9,7 @@ class Gui():
     def __init__(self):
         self.colors = {
             "green": "#8ef3c2",
-            "blue": "#deeaf3",
+            "blue": "#317cde",
             "gray_fg": "gray8",
             "gray_bg": "gray55",
             "orange": "#f6b26b",
@@ -32,7 +32,7 @@ class Gui():
             font=("Helvetica", 13),
             height=200,
             bg=self.colors["blue"],
-            fg="gray8"
+            fg="white"
         )
 
         self.message_box.pack(fill=tkinter.X)
@@ -57,7 +57,7 @@ class Gui():
             self.message_box.config(fg=self.colors[fg])
 
     def mark_waiting(self):
-        self.update_label("Waiting for connection", "blue", "gray_fg")
+        self.update_label("Waiting for connection", "blue", "white")
 
     def mark_connected(self):
         self.update_label("Connected", "green", "white")
