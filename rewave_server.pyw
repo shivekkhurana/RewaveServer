@@ -73,6 +73,11 @@ def read_from_client(bs):
                 print("recv exit, breaking")
                 break
 
+            if "mouse_click" in command:
+                pos = m.position()
+                command = command.split('-')
+                m.press(pos[0], pos[1], button=int(command[1]))
+
             if "move_mouse" in command:
                 command = command.split("-")
                 try:
@@ -88,6 +93,11 @@ def read_from_client(bs):
 
         except bluetooth.btcommon.BluetoothError:
             #connection reset by peer
+            break
+
+        except OSError:
+            #bt not started
+            time.sleep(5)
             break
 
     print('out of loop')
