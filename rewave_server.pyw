@@ -95,6 +95,10 @@ def read_from_client(bs):
             #connection reset by peer
             break
 
+        except OSError:
+            #bt not started
+            time.sleep(5)
+            break
 
     print('out of loop')
     g.mark_waiting()
