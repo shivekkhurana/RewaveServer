@@ -66,3 +66,6 @@ class Gui():
         self.update_label(":P", "orange", "white")
         time.sleep(0.5)
         self.mark_connected()
+
+    def mark_retrying(self):
+        self.update_label("Cannot start server, retrying ... \n Make sure that bluetooth is available", "gray_bg", "gray_fg")

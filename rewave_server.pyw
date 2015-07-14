@@ -52,10 +52,18 @@ def start_server():
     '''
     global bs, socket
     bs = BtServer(socket)
-    bs.start()
-    socket = bs.socket # save the newly created socket for later ref
-    g.mark_connected()
-    read_from_client(bs)
+    try:
+        bs.start()
+        socket = bs.socket # save the newly created socket for later ref
+        g.mark_connected()
+        read_from_client(bs)
+    except OSError:
+        # either no bt available or not ready yet
+        g.mark_retrying()
+        print("No bt OSError caught")
+        time.sleep(5)
+        g.mark_waiting()
+        start_server()
 
 
 def read_from_client(bs):
