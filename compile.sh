@@ -1,1 +1,0 @@
-nuitka --recurse-to=bt_server --recurse-to=gui --recurse-to=pykeyboard --recurse-to=Xlib --recurse-to=bluetooth --standalone rewave_server.py
